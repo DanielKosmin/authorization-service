@@ -11,6 +11,7 @@ import jakarta.validation.ConstraintValidatorContext;
 import java.util.Properties;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -20,6 +21,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
 @ExtendWith(MockitoExtension.class)
+@Tag("unit")
 public class RegistrationValidatorTest {
 
   @Mock private UserRepository userRepository;

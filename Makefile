@@ -14,13 +14,13 @@ clean: ## Removes the target/ directory (cleans previous builds)
 compile: ## Compiles the Java source code
 	@mvn compile
 
-.PHONY: unit
-unit: ## Runs unit tests using JUnit/TestNG
-	@mvn unit
-
 .PHONY: test
-test: ## Run entire test suite
-	@mvn verify -Dgroups=int
+test: ## Runs unit tests using JUnit/TestNG
+	@mvn test
+
+.PHONY: unit
+unit: ## Run entire test suite
+	@mvn verify -Dgroups=unit
 
 .PHONY: package
 package: ## Builds the project into a .jar or .war file
