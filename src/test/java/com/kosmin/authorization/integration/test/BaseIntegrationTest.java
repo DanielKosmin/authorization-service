@@ -1,6 +1,8 @@
 package com.kosmin.authorization.integration.test;
 
 import com.kosmin.authorization.repository.UserRepository;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,16 @@ public abstract class BaseIntegrationTest {
 
   @Autowired protected WebTestClient webClient;
   @Autowired protected UserRepository userRepository;
+
+  @BeforeAll
+  public void beforeAll() {
+    userRepository.deleteAll();
+  }
+
+  @AfterAll
+  public void afterAll() {
+    userRepository.deleteAll();
+  }
 
   protected <T> T sendHttpReq(
       HttpMethod method,
