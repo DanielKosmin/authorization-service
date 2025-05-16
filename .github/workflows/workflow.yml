@@ -1,0 +1,56 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - '*'
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Setup JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Check
+        run: make check
+
+      - name: Unit Tests
+        run: make unit
+
+#  integration_tests:
+#    if: github.event_name == 'pull_request'
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Checkout Code
+#        uses: actions/checkout@v3
+#
+#      - name: Setup JDK
+#        uses: actions/setup-java@v3
+#        with:
+#          java-version: '21'
+#          distribution: 'temurin'
+#
+#      - name: Install Docker Compose
+#        run: |
+#          sudo apt-get update
+#          sudo apt-get install -y docker-compose
+#
+#      - name: Run Docker Compose
+#        run: |
+#          docker-compose up -d
+#          sleep 30
+#
+#      - name: Run Integration Tests
+#        env:
+#          SPRING_PROFILE: test
+#        run: make test
