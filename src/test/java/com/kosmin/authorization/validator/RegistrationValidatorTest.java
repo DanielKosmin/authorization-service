@@ -8,7 +8,6 @@ import com.kosmin.authorization.model.RegisterUser;
 import com.kosmin.authorization.model.UserEntity;
 import com.kosmin.authorization.repository.UserRepository;
 import jakarta.validation.ConstraintValidatorContext;
-
 import java.util.Optional;
 import java.util.Properties;
 import org.junit.jupiter.api.Assertions;
