@@ -13,4 +13,5 @@ public class Response {
   private String errorMessage;
   private String message;
   private Status status;
+  private String token;
 }

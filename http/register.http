@@ -3,6 +3,15 @@ POST http://localhost:8080/authorization/v1/register
 content-type: application/json
 
 {
-  "username": "username4",
+  "username": "username6",
+  "password": "!A1swordwqqwdd"
+}
+
+### POST Generate user token
+POST http://localhost:8080/authorization/v1/token
+content-type: application/json
+
+{
+  "username": "username6",
   "password": "!A1swordwqqwdd"
 }

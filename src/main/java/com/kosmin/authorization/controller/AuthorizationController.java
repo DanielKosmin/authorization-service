@@ -2,6 +2,7 @@ package com.kosmin.authorization.controller;
 
 import com.kosmin.authorization.model.RegisterUser;
 import com.kosmin.authorization.model.Response;
+import com.kosmin.authorization.model.TokenGenerationRequest;
 import com.kosmin.authorization.service.AuthorizationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +25,12 @@ public class AuthorizationController {
   @PostMapping("register")
   public ResponseEntity<Response> registerUser(@Valid @RequestBody RegisterUser entity) {
     return authorizationService.registerUser(entity);
+  }
+
+  @PostMapping("token")
+  public ResponseEntity<Response> generateToken(
+      @Valid @RequestBody TokenGenerationRequest tokenGenerationRequest) {
+    return authorizationService.generateToken(tokenGenerationRequest);
   }
 
   @GetMapping("health")

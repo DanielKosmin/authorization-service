@@ -1,12 +1,13 @@
 package com.kosmin.authorization.validator;
 
-import com.kosmin.authorization.model.RegisterEntity;
 import com.kosmin.authorization.model.RegisterUser;
+import com.kosmin.authorization.model.UserEntity;
 import com.kosmin.authorization.repository.UserRepository;
 import io.micrometer.common.util.StringUtils;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import java.util.Arrays;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -38,8 +39,8 @@ public class RegistrationValidator
   }
 
   private String isValidUsername(String username) {
-    RegisterEntity registerEntity = userRepository.findByUsername(username);
-    if (registerEntity != null) {
+    Optional<UserEntity> userEntity = userRepository.findByUsername(username);
+    if (userEntity.isPresent()) {
       return "Duplicate username, please try again";
     }
     return "";

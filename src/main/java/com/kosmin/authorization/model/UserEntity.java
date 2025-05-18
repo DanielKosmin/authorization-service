@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 @Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
-public class RegisterEntity {
+public class UserEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,6 +35,9 @@ public class RegisterEntity {
 
   @Column(name = "updated_at")
   private LocalDateTime updatedAt;
+
+  @Column(name = "token_expiration")
+  private Long tokenExpiration;
 
   @PrePersist
   protected void onCreate() {

@@ -4,10 +4,12 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.when;
 
-import com.kosmin.authorization.model.RegisterEntity;
 import com.kosmin.authorization.model.RegisterUser;
+import com.kosmin.authorization.model.UserEntity;
 import com.kosmin.authorization.repository.UserRepository;
 import jakarta.validation.ConstraintValidatorContext;
+
+import java.util.Optional;
 import java.util.Properties;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -42,7 +44,7 @@ public class RegistrationValidatorTest {
 
   @Test
   public void shouldReturnFalse_whenUsernameIsAvailableAndPasswordIsInvalid() {
-    when(userRepository.findByUsername(username)).thenReturn(null);
+    when(userRepository.findByUsername(username)).thenReturn(Optional.empty());
     Assertions.assertFalse(
         registrationValidator.isValid(
             RegisterUser.builder().username(username).password("dqwd").build(), context));
@@ -50,7 +52,7 @@ public class RegistrationValidatorTest {
 
   @Test
   public void shouldReturnFalse_whenUsernameIsNotAvailableAndPasswordIsInvalid() {
-    when(userRepository.findByUsername(username)).thenReturn(new RegisterEntity());
+    when(userRepository.findByUsername(username)).thenReturn(Optional.of(new UserEntity()));
     Assertions.assertFalse(
         registrationValidator.isValid(
             RegisterUser.builder().username(username).password("dqwd").build(), context));
@@ -58,7 +60,7 @@ public class RegistrationValidatorTest {
 
   @Test
   public void shouldReturnFalse_whenUsernameIsNotAvailableAndPasswordIsValid() {
-    when(userRepository.findByUsername(username)).thenReturn(new RegisterEntity());
+    when(userRepository.findByUsername(username)).thenReturn(Optional.of(new UserEntity()));
     Assertions.assertFalse(
         registrationValidator.isValid(
             RegisterUser.builder().username(username).password("dqwd1X@cqwmqw").build(), context));
@@ -66,7 +68,7 @@ public class RegistrationValidatorTest {
 
   @Test
   public void shouldReturnTrue_whenUsernameIsAvailableAndPasswordIsValid() {
-    when(userRepository.findByUsername(username)).thenReturn(null);
+    when(userRepository.findByUsername(username)).thenReturn(Optional.empty());
     Assertions.assertTrue(
         registrationValidator.isValid(
             RegisterUser.builder().username(username).password("dqwd1X@cqwmqw").build(), context));

@@ -1,9 +1,9 @@
 package com.kosmin.authorization.integration.test;
 
-import com.kosmin.authorization.model.RegisterEntity;
 import com.kosmin.authorization.model.RegisterUser;
 import com.kosmin.authorization.model.Response;
 import com.kosmin.authorization.model.Status;
+import com.kosmin.authorization.model.UserEntity;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpMethod;
@@ -22,7 +22,7 @@ public class UserRegistrationIntegrationTest extends BaseIntegrationTest {
             Response.class,
             HttpStatus.CREATED);
     Assertions.assertEquals(Status.SUCCESS, response.getStatus());
-    RegisterEntity entity = userRepository.findByUsername(username);
+    UserEntity entity = userRepository.findByUsername(username).get();
     Assertions.assertNotNull(entity);
   }
 
@@ -50,7 +50,7 @@ public class UserRegistrationIntegrationTest extends BaseIntegrationTest {
             Response.class,
             HttpStatus.CREATED);
     Assertions.assertEquals(Status.SUCCESS, response.getStatus());
-    RegisterEntity entity = userRepository.findByUsername(username);
+    UserEntity entity = userRepository.findByUsername(username).get();
     Assertions.assertNotNull(entity);
 
     Response dupRes =

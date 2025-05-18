@@ -49,3 +49,7 @@ format: ## Format Project with Spotless
 .PHONY: check
 check: ## Check for formatting violations
 	@mvn spotless:check
+
+.PHONY: jwt_secret
+jwt_secret: ## Generate a 256-bit secret key for JWT (HS256)
+	@openssl rand -base64 32
