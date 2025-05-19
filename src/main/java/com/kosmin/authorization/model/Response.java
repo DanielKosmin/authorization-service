@@ -14,4 +14,6 @@ public class Response {
   private String message;
   private Status status;
   private String token;
+  private Long expiresAt;
+  private String expiresAtIso;
 }

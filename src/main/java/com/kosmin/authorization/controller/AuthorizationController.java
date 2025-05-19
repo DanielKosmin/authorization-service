@@ -30,7 +30,7 @@ public class AuthorizationController {
   @PostMapping("token")
   public ResponseEntity<Response> generateToken(
       @Valid @RequestBody TokenGenerationRequest tokenGenerationRequest) {
-    return authorizationService.generateToken(tokenGenerationRequest);
+    return authorizationService.retrieveToken(tokenGenerationRequest);
   }
 
   @GetMapping("health")

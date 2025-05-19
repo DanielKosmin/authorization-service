@@ -1,6 +1,7 @@
 package com.kosmin.authorization.service;
 
 import static com.kosmin.authorization.util.Util.computeCurrentUnixTimestampMilliseconds;
+import static com.kosmin.authorization.util.Util.convertUnixToISO8601;
 
 import com.kosmin.authorization.model.Response;
 import com.kosmin.authorization.model.Status;
@@ -38,12 +39,13 @@ public class TokenProvisioningService {
                 String jwtToken =
                     generateToken(
                         tokenGenerationRequest.getUsername(), currentUnixTime, expirationTime);
-                user.setTokenExpiration(expirationTime);
                 Thread.startVirtualThread(() -> userRepository.save(user));
                 response
                     .token(jwtToken)
                     .status(Status.SUCCESS)
-                    .message("Successfully provisioned token");
+                    .message("Successfully provisioned token")
+                    .expiresAt(expirationTime)
+                    .expiresAtIso(convertUnixToISO8601(expirationTime));
               } else {
                 response.status(Status.FAILURE).errorMessage("Invalid password");
               }

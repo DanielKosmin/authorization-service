@@ -36,9 +36,6 @@ public class UserEntity {
   @Column(name = "updated_at")
   private LocalDateTime updatedAt;
 
-  @Column(name = "token_expiration")
-  private Long tokenExpiration;
-
   @PrePersist
   protected void onCreate() {
     this.createdAt = LocalDateTime.now();
