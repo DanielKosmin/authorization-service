@@ -7,7 +7,6 @@ import com.kosmin.authorization.model.TokenGenerationRequest;
 import com.kosmin.authorization.model.UserEntity;
 import com.kosmin.authorization.repository.UserRepository;
 import io.micrometer.common.util.StringUtils;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -21,7 +20,6 @@ public class AuthorizationService {
 
   private final UserRepository userRepository;
   private final PasswordService passwordService;
-  private final RedisManagementService redisManagementService;
   private final TokenProvisioningService tokenProvisioningService;
 
   public ResponseEntity<Response> registerUser(RegisterUser entity) {
@@ -45,17 +43,11 @@ public class AuthorizationService {
   }
 
   public ResponseEntity<Response> retrieveToken(TokenGenerationRequest tokenGenerationRequest) {
-    Optional<UserEntity> userEntity =
-        redisManagementService.getUser(tokenGenerationRequest.getUsername());
-    if (userEntity.isPresent()) {
-      return ResponseEntity.ok().build();
-    } else {
-      Response response = tokenProvisioningService.provisionToken(tokenGenerationRequest);
-      HttpStatus httpStatus =
-          StringUtils.isNotBlank(response.getErrorMessage())
-              ? HttpStatus.BAD_REQUEST
-              : HttpStatus.CREATED;
-      return ResponseEntity.status(httpStatus).body(response);
-    }
+    Response response = tokenProvisioningService.provisionToken(tokenGenerationRequest);
+    HttpStatus httpStatus =
+        StringUtils.isNotBlank(response.getErrorMessage())
+            ? HttpStatus.BAD_REQUEST
+            : HttpStatus.CREATED;
+    return ResponseEntity.status(httpStatus).body(response);
   }
 }
