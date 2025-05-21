@@ -1,5 +1,6 @@
 package com.kosmin.authorization.validator;
 
+import com.kosmin.authorization.config.PropertyConfig;
 import com.kosmin.authorization.model.RegisterUser;
 import com.kosmin.authorization.model.UserEntity;
 import com.kosmin.authorization.repository.UserRepository;
@@ -9,7 +10,6 @@ import jakarta.validation.ConstraintValidatorContext;
 import java.util.Arrays;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -17,18 +17,17 @@ public class RegistrationValidator
     implements ConstraintValidator<ValidateRegistration, RegisterUser> {
 
   private final UserRepository userRepository;
-  private final String specialChars;
+  private final PropertyConfig propertyConfig;
 
   @Autowired
-  public RegistrationValidator(
-      UserRepository userRepository,
-      @Value("${authorization.service.special.chars}") String specialChars) {
+  public RegistrationValidator(UserRepository userRepository, PropertyConfig propertyConfig) {
     this.userRepository = userRepository;
-    this.specialChars = specialChars;
+    this.propertyConfig = propertyConfig;
   }
 
   @Override
   public boolean isValid(RegisterUser user, ConstraintValidatorContext context) {
+    var r = propertyConfig.getSpecialChars();
     String username = user.getUsername();
     String password = user.getPassword();
     String validUsername = isValidUsername(username);
@@ -49,7 +48,7 @@ public class RegistrationValidator
   private String isValidPassword(String password) {
     boolean validLength = password.length() >= 12;
     boolean containsSpecialChar =
-        Arrays.stream(specialChars.split(",")).anyMatch(password::contains);
+        Arrays.stream(propertyConfig.getSpecialChars().split(",")).anyMatch(password::contains);
     boolean containsUppercase = password.chars().anyMatch(Character::isUpperCase);
     boolean containsLowercase = password.chars().anyMatch(Character::isLowerCase);
     boolean containsNumber = password.chars().anyMatch(Character::isDigit);
@@ -62,7 +61,9 @@ public class RegistrationValidator
     StringBuilder errorMessage = new StringBuilder("Password must contain ");
     if (!validLength) errorMessage.append("at least 12 characters, ");
     if (!containsSpecialChar)
-      errorMessage.append(String.format("at least one special character from: %s ", specialChars));
+      errorMessage.append(
+          String.format(
+              "at least one special character from: %s ", propertyConfig.getSpecialChars()));
     if (!containsUppercase) errorMessage.append("at least one uppercase letter, ");
     if (!containsLowercase) errorMessage.append("at least one lowercase letter, ");
     if (!containsNumber) errorMessage.append("at least one number, ");

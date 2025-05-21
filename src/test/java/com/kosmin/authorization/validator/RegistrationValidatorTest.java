@@ -4,6 +4,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.when;
 
+import com.kosmin.authorization.config.PropertyConfig;
 import com.kosmin.authorization.model.RegisterUser;
 import com.kosmin.authorization.model.UserEntity;
 import com.kosmin.authorization.repository.UserRepository;
@@ -37,8 +38,9 @@ public class RegistrationValidatorTest {
   void setUp() {
     lenient().when(context.buildConstraintViolationWithTemplate(anyString())).thenReturn(builder);
     Properties properties = loadYamlProperties();
-    String specialChars = properties.getProperty("authorization.service.special.chars");
-    registrationValidator = new RegistrationValidator(userRepository, specialChars);
+    PropertyConfig propertyConfig = new PropertyConfig();
+    propertyConfig.setSpecialChars("!,@,#,$,%,^,&,*,(,)");
+    registrationValidator = new RegistrationValidator(userRepository, propertyConfig);
   }
 
   @Test

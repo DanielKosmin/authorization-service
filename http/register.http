@@ -1,9 +1,12 @@
+### POST refresh dependencies
+POST http://localhost:8080/actuator/refresh
+
 ### POST register user
 POST http://localhost:8080/authorization/v1/register
 content-type: application/json
 
 {
-  "username": "username6",
+  "username": "username3",
   "password": "!A1swordwqqwdd"
 }
 
